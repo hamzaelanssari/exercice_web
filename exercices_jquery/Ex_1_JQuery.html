@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="ce">
+            <div style="color:green">Ma première div 11111</div>
+            <div style="color:lightskyblue">Ma deuxième div  22222</div>
+            <div style="color:purple">Ma troisième div 33333</div>
+            <div style="color:darkorange">Ma quatrième div 44444</div>
+    </div>
+</body>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+    $("div div:first").css("color", "red");
+    $("div div:first").clone().appendTo("div:last-child");
+    $("div div:first").before($("div div:last").get());
+    $("div div:last").after("<div>"+($('div div').length+1)+"</div>");
+    $("div div").each(function(k,v){
+        v.innerText = v.innerText +"  num : " + (k); 
+    })
+</script>
+</html>

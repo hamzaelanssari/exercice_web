@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Users list</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .user .card {
+            margin: 10px;
+        }
+        .female {
+
+        }
+        .male {
+
+        }
+        .user img {
+            opacity: 0.7
+        }
+        .user:hover img {
+            opacity: 1;
+            transform: scale(1.04);
+            transition: 200ms
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Users List</h1>
+        <button class="btn btn-success" onclick="ChangeCurrentView()">Table</button>
+        <div class="users">
+            <div class="row">
+                
+            </div>
+            <div class="row" id="trow">
+                
+            </div>
+        </div>
+    </div>
+    <div id="gabaris" class="d-none">
+        <div class="col-md-4 user">
+            <div class="card">
+                <img src="img/gray.jpg" class="card-img-top blankimage" alt="">
+                <div class="card-body">
+                    <span class="d-none" id="carduserid"></span>
+                    <h5 class="card-title name blankname"></h5>
+                    <p class="card-text email blankemail"></p>
+                    <button class="btn btn-block btn-blank">Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <span id="userid" style="display:none;"></span>
+          <form action="#">
+            <div class="form-group">
+                <label for="InputLastname">Nom</label>
+                <input type="text" class="form-control" id="InputLastname" value="">
+            </div>
+            <div class="form-group">
+                <label for="InputFirstname">Prenom</label>
+                <input type="text" class="form-control" id="InputFirstname" value="">
+            </div>    
+            <button class="btn btn-primary" id="saveUserbtn" onclick="UpdateUser(event)">Sauvegarder</button>
+          </form>
+        </div>
+      
+      </div>
+    <script src="users.js"></script>
+      
+    <script>
+        function showBlankGrid(){
+            var gabari = document.querySelector('#gabaris .user');
+            var dest = document.querySelector('.users .row');
+            dest.innerHTML = '';
+            users.forEach(function(user, index){
+                var copy = gabari.cloneNode(true);
+                copy.classList.add('user'+index);
+                dest.appendChild(copy);
+            })
+            setTimeout(showGrid,3500);
+        }
+        function showGrid(){
+            users.forEach(function(user, index){
+                var userCard = document.querySelector('.user'+index);
+                userCard.querySelector('img').setAttribute('src', user.picture.large);
+                userCard.querySelector('.name').innerHTML = '<b>' + user.name.last + '</b> ' + user.name.first;
+                userCard.querySelector('.name').classList.remove('blankname');
+                userCard.querySelector('.email').innerText = user.email;
+                userCard.querySelector('.email').classList.remove('blankemail');
+                userCard.querySelector('.btn').classList.remove('btn-blank');
+                userCard.classList.add(user.gender);
+                userCard.querySelector('.btn').setAttribute('onclick', 'Openeditmodal(' + index + ')');
+                userCard.querySelector('.btn').classList.add("btn-success");
+            
+            })
+            var table = document.querySelector('.users #trow');
+            ShowTable();
+            table.classList.toggle('d-none');
+        }
+        function ShowTable() {
+            var tbl = document.createElement('table');
+            tbl.style.overflowX = "auto"; 
+            tbl.style.width = '100%';
+            tbl.style.marginTop = "10px"; 
+            var dest = document.querySelector('.users #trow');
+            dest.innerHTML = '';
+            var tbdy = document.createElement('tbody');
+            users.forEach(function(user, index){
+                var tr = document.createElement('tr');
+                tr.classList.add("user"+index);
+                var userid = document.createElement('td');
+                userid.innerHTML = index;
+                userid.classList.add("d-none");
+                userid.classList.add("tbluserid");
+                tr.appendChild(userid);
+                var picture = document.createElement('td');
+                picture.classList.add("userpicture");
+                picture.innerHTML = '<img src="'+ user.picture.large + '">';
+                tr.appendChild(picture);
+                var name = document.createElement('td');
+                name.classList.add("username");
+                name.innerHTML = '<b>' + user.name.last + '</b> ' + user.name.first + '<br>' + user.email;
+                tr.appendChild(name);
+                var btnmodifier = document.createElement('button');
+                btnmodifier.innerHTML = 'Modifier';
+                btnmodifier.setAttribute('onclick', 'Openeditmodal(' + index + ')');
+                btnmodifier.classList.add("btn");
+                btnmodifier.classList.add("btn-success"); 
+                btnmodifier.classList.add("btn-block");
+                btnmodifier.style.marginTop = "20%";
+                tr.appendChild(btnmodifier);
+                tbdy.appendChild(tr);
+            })
+            tbl.appendChild(tbdy);
+            dest.appendChild(tbl);    
+        }
+        showBlankGrid();
+        function Openeditmodal(index){
+            var modal = document.getElementById('editModal');
+            var userid = document.getElementById('userid');
+            modal.style.display = "block";
+            userid.innerHTML = index;
+            var lastname = document.getElementById('InputLastname');
+            var firstname = document.getElementById('InputFirstname');
+            lastname.value=users[index].name.last;
+            firstname.value=users[index].name.first;
+        }
+        function UpdateUser(event) {
+            event.preventDefault();
+            var userid = document.getElementById('userid');
+            var index = Number(userid.innerHTML);
+            var lastname = document.getElementById('InputLastname');
+            var firstname = document.getElementById('InputFirstname');
+            var modal = document.getElementById('editModal');
+            users[index].name.last = lastname.value;
+            users[index].name.first = firstname.value;
+            modal.style.display = "none";
+            UpdateUserView(index);
+        }
+        function UpdateUserView(index){
+            var usersGrid = document.querySelector('.users .row');
+            var table = document.querySelector('.users #trow');
+            var username = document.querySelector('.user'+index+' .name');
+            console.log(username);
+            username.innerHTML = '<b>' + users[index].name.last + '</b> ' + users[index].name.first;
+            username = document.querySelector('.user'+index+' .username');
+            console.log(username);
+            username.innerHTML = '<b>' + users[index].name.last + '</b> ' + users[index].name.first + '<br>' + users[index].email;
+            
+        }
+        function UpdateCurrentView(){
+            var users = document.querySelector('.users .row');
+            var table = document.querySelector('.users #trow');
+            if(!users.classList.contains("d-none")){
+                showGrid();
+            }else{
+                ShowTable();
+            }
+
+        }
+        function ChangeCurrentView(){
+            var users = document.querySelector('.users .row');
+            var table = document.querySelector('.users #trow');
+            if(!users.classList.contains("d-none")){
+                console.log(table.innerHTML);
+                users.classList.add("d-none");
+                table.classList.remove("d-none");
+                if(table.innerHTML == '') ShowTable();
+            }else{
+                users.classList.remove("d-none");
+                table.classList.add("d-none");
+                if(users.innerHTML == '') showGrid();
+            }      
+        }
+        
+        
+    </script>
+   
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/modal.js"></script>
+</body>
+</html>

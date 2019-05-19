@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            width:100px; height:100px; background: #CCF;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="ce" style="height:220px; padding:20px">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+    <button>show</button>
+</body>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+    $("#ce div").first().hide(1000,function rep() {
+        $(this).next().hide(1000, rep);
+    })
+    $("button").click(function() {
+        $("#ce div").first().show(1000,function rep() {
+            $(this).next().show(1000, rep);
+        })
+    });
+</script>
+</html>

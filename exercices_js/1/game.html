@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        table tr td{
+            border: 2px solid lightblue;
+            background: black;
+            padding: 10px; 
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <input type='text' name='row' onchange="setInputVals()">
+    <input type='text' name='col' onchange="setInputVals()">
+    <input type='button' onclick="makeTable(row,col)" name='makeAtable' value="Submit">
+
+    <div id="points"></div>
+    <div id="out"></div>
+
+
+    <div id="count"></div>
+    <script>
+    /*Code*/
+    var row = 0;  
+    var col = 0;
+    var elementsClicked = [];
+    var points = 0;
+    resetInputVals();
+    resetPointsVal();
+    /*Functions*/
+    function resetPointsVal(){
+        points = 0;
+        document.getElementById('points').innerHTML = '<p><b>Points' + ' ' +points;
+    }
+    function resetInputVals(){
+        document.querySelector('input[name=row]').value = 0;
+        document.querySelector('input[name=col]').value = 0;
+    }
+    function setInputVals(){
+        if(document.querySelector('input[name=row]').value != 0 && document.querySelector('input[name=col]').value !=0 ){
+            row= document.querySelector('input[name=row]').value;
+            col= document.querySelector('input[name=col]').value;
+        }  
+    }
+    function setColor(td,color){
+        td.style.background = color;
+    }
+    function getColor(td){
+        return td.style.backgroundColor;
+    }
+    function HandleElementClick(td,elements){
+        if(elements.length < 2 && getColor(td) !=='yellow'){
+            setColor(td,'yellow');
+            elements.push(td);
+        }
+        if(elements.length === 2){
+            if(Number(elements[0].innerHTML) === Number(elements[1].innerHTML)){
+                points++;
+                document.getElementById('points').innerHTML = '<p><b>Points' + ' ' +points;
+                elements.pop();
+                elements.pop();
+            }
+            else{
+               setTimeout(function(){
+                    setColor(elements[0],'black');
+                    setColor(elements[1],'black');
+                    elements.pop();
+                    elements.pop(); 
+                }, 
+                1000);     
+            }
+        }
+    }
+    function makeTable(lignes,colonnes){
+        var i,j;
+        var k = 0;
+        resetPointsVal();
+        var numbersGenerated = []; 
+        var halftabsize = (lignes*colonnes)/2;
+        var stopGenerate = false;
+        var tbl = "<table>";
+        for(i = 0 ; i < lignes; i++){
+            tbl += '<tr>';       
+            for(j = 0 ; j < colonnes ; j++){
+               var randnumber;
+               if(!stopGenerate){
+                    randnumber = Math.floor(Math.random() * 10);
+                    ++k;
+                    if(k >= halftabsize) stopGenerate = true;
+                    tbl += "<td onclick='HandleElementClick(this,elementsClicked)'>" + randnumber + "</td>";
+                    numbersGenerated.push(randnumber);
+               }
+               else{
+                    randnumber = Math.floor(Math.random() * k);
+                    --k;
+                    tbl += "<td onclick='HandleElementClick(this,elementsClicked)'>" + numbersGenerated[randnumber] + "</td>";
+                    numbersGenerated.splice(randnumber, 1);
+               }
+            }
+            tbl += '</tr>';
+        }  
+        tbl +='</table>';
+        showTable('out',tbl);
+        countNumbers();
+    }
+    function showTable(id,tbl){
+        document.getElementById(id).innerHTML = tbl;  
+    }
+    function showcountTable(id,tbl){
+        var i;
+        document.getElementById(id).innerHTML = '';
+        for(i = 0 ; i < tbl.length; i++){
+            document.getElementById(id).innerHTML += i + ' : ' +  tbl[i] +'<br>';
+        }
+    }
+    function countNumbers(){ 
+        var i;
+        var elementsCount = [];
+        elements = document.querySelectorAll("td");
+        elements.forEach(function(Item) {
+            console.log(Item);
+            var currentnumb = Number(Item.innerHTML);
+            if(elementsCount[currentnumb] > 0){}
+            else elementsCount[currentnumb] = 0;
+            console.log(currentnumb);
+            elementsCount[currentnumb] +=1; 
+        });
+        showcountTable('count',elementsCount);
+    }
+    </script>
+</body>
+</html>

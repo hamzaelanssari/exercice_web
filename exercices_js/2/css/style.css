@@ -1,0 +1,20 @@
+body {
+    margin: 0 auto; /* pour éviter les marges */
+}
+
+#user{
+    border: 1px solid black;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+#user p{
+    padding: 3px;
+}
+
+.flex-container {
+    /*margin: auto;
+    width: 75%;*/
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

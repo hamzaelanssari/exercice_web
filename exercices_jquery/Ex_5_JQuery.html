@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>.r {text-align: right}</style>
+</head>
+<body>
+    <div id="ce">
+            <table border="1" cellpadding="6" width="100%">
+                <tbody><tr><th>PRODUIT</th><th>PRIX</th><th>QUANTITE</th><th>SOUS-TOTAL</th></tr>
+                <tr><td>PC</td><td class="r price">5400.00</td><td class="r">3</td><td class="r">?</td></tr>
+                <tr><td>Imprimante</td><td class="r price">1500.00</td><td class="r">10</td><td class="r">?</td></tr>
+                <tr><td>Scanner</td><td class="r price">2400.00</td><td class="r">2</td><td class="r">?</td></tr>
+                <tr><td>Onduleur</td><td class="r price">1200.00</td><td class="r">3</td><td class="r">?</td></tr>
+                <tr><td colspan="3" class="r total">TOTAL : </td><td class="r">?</td></tr>
+            </tbody></table>
+        </div>
+</body>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+    var sum = 0;
+    $.each( $(".price"),function rep(i, v) {
+        $(v).next().next().text(format(parseInt($(v).text())*parseInt($(v).next().text()))+'.00');
+        sum += parseInt($(v).text())*parseInt($(v).next().text());
+    });
+    $('.total').next().text(format(sum)+'.00');
+    function format(v) {
+        v = v.toString();
+        var res = "";
+        for(i = 0; i < v.length; i++){
+            if(i%3 == 0) res =" " + res;
+            res = v[v.length-i-1] + res;
+        }
+        return res;
+    }
+</script>
+</html>

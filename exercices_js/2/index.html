@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="out" class="flex-container">
+        
+    </div>
+    <div id="user" style='display:none;'>
+        <img id="userPicture" src=''>
+        <p id="userName"></p>
+        <p id="userBio"></p>
+    </div>
+
+    <script>
+        var users = [
+            {
+                picture: 'https://lorempixel.com/300/300/people/?123',
+                name: 'test0',
+                bio: 'Lorem ipsum dolor sit amet.'
+            },
+            {
+                picture: 'https://lorempixel.com/300/300/people/?86',
+                name: 'test1',
+                bio: 'Lorem ipsum dolor sit amet.'
+            },
+            {
+                picture: 'https://lorempixel.com/300/300/people/?23',
+                name: 'test2',
+                bio: 'Lorem ipsum dolor sit amet.'
+            },
+            {
+                picture: 'https://lorempixel.com/300/300/people/?152',
+                name: 'test3',
+                bio: 'Lorem ipsum dolor sit amet.'
+            },
+            {
+                picture: 'https://lorempixel.com/300/300/people/?72',
+                name: 'test4',
+                bio: 'Lorem ipsum dolor sit amet.'
+            },
+            {
+                picture: 'https://lorempixel.com/300/300/people/?90',
+                name: 'test5',
+                bio: 'Lorem ipsum dolor sit amet.'
+            },
+        ]
+    function showUsers(usersArray,id){
+        var i;
+
+        var el = document.querySelector('#user');
+
+        var outdiv = document.querySelector(id);
+        for(i = 0; i < usersArray.length;i++){
+            var userel = el.cloneNode(true);
+            userel.querySelector('#userPicture').src = usersArray[i].picture;
+            userel.querySelector('#userName').innerHTML = usersArray[i].name;
+            userel.querySelector('#userBio').innerHTML = usersArray[i].bio;
+            userel.style.display ="inline-block";
+            outdiv.appendChild(userel);
+        }
+    }
+    showUsers(users,'#out');
+    </Script>
+    
+</body>
+</html>

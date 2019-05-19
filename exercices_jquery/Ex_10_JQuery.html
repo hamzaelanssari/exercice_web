@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        img[src='image.jpg']{
+            width: 300px;
+            border: 2px solid black;
+        }
+        .box{
+            margin-left: 20px;
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+        }
+        .box2{
+            display: none;
+            position:absolute;
+            width:50px;
+            height: 50px;
+            border:1px solid hotpink;
+        }
+    </style>
+</head>
+<body>
+    <img src="image.jpg" alt="">
+    <div class="box"></div>
+    <div class="box2"></div>
+</body>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+    $("img[src='image.jpg']").clone().css("width", 300*4).css('position','relative').hide(0).appendTo('.box');
+    $("img[src='image.jpg']").first().mousemove(function(e){
+        $(".box2").show(0).css('top',(e.clientY-30)+"px").css('left',(e.clientX-30)+"px");
+        $(".box img[src='image.jpg']").show(0)
+        .css('top',-e.clientY*3+25+"px")
+        .css('left',-e.clientX*3+25+"px");
+    });
+    $("img[src='image.jpg']").mouseleave(function(){
+        $(".box2").hide(0);
+    });
+</script>
+</html>
